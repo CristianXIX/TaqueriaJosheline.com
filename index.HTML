@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+      <link rel="stylesheet" src="ESTILOS.CSS" type="text/css">
+      <link rel="stylesheet" href="ESTILOS.CSS">
+    <title>Taquería El Buen Sabor</title>
+    
+    <script>
+        let carrito = {};
+        
+        function añadirAlCarrito(producto, precio) {
+            let cantidad = parseInt(document.getElementById(`cantidad-${producto}`).value);
+            if (carrito[producto]) {
+                carrito[producto].cantidad += cantidad;
+                carrito[producto].total += precio * cantidad;
+            } else {
+                carrito[producto] = { cantidad: cantidad, total: precio * cantidad };
+            }
+            actualizarCarrito();
+        }
+        
+        function actualizarCarrito() {
+            let carritoElemento = document.getElementById("contenido-carrito");
+            carritoElemento.innerHTML = "";
+            let totalGeneral = 0;
+            for (let item in carrito) {
+                let elemento = document.createElement("p");
+                elemento.textContent = `${carrito[item].cantidad} ${item} - $${carrito[item].total}`;
+                carritoElemento.appendChild(elemento);
+                totalGeneral += carrito[item].total;
+            }
+            let totalElemento = document.createElement("h3");
+            totalElemento.textContent = `Total: $${totalGeneral}`;
+            carritoElemento.appendChild(totalElemento);
+        }
+        
+        function ordenarAhora() {
+            if (Object.keys(carrito).length === 0) {
+                alert("El carrito está vacío. Añade productos antes de ordenar.");
+            } else {
+                let orden = Object.entries(carrito).map(([producto, datos]) => `${datos.cantidad} ${producto}`).join(", ");
+                alert("Orden confirmada: " + orden);
+                carrito = {};
+                actualizarCarrito();
+            }
+        }
+    </script>
+</head>
+<body>
+    <header>
+        Taquería El Buen Sabor
+    </header>
+    <nav>
+        <a href="#tacos">Tacos</a>
+        <a href="Taqueria2.html">Quesadillas</a>
+        <a href="Refrescos.html">Refrescos</a>
+        <a href="#carrito">Carrito</a>
+    </nav>
+    <div class="menu">
+        <div id="tacos" class="menu-section">
+            <h2>TACOS</h2>
+            <div class="menu-item"><h3>Pastor - $15</h3><img src="A.jpg"><BR></BR><input id="cantidad-Pastor" type="number" value="1" min="1"><button onclick="añadirAlCarrito('Pastor', 15)">Añadir al Carrito</button></div>
+            <div class="menu-item"><h3>Chorizo - $15</h3><img src="B.jpg"><BR></BR><input id="cantidad-Chorizo" type="number" value="1" min="1"><button onclick="añadirAlCarrito('Chorizo', 15)">Añadir al Carrito</button></div>
+            <div class="menu-item"><h3>Bistec - $18</h3><img src="C.jpg"><BR></BR><input id="cantidad-Bistec" type="number" value="1" min="1"><button onclick="añadirAlCarrito('Bistec', 18)">Añadir al Carrito</button></div>
+            <div class="menu-item"><h3>Tripa - $20</h3><img src="D.jpg"><BR></BR><input id="cantidad-Tripa" type="number" value="1" min="1"><button onclick="añadirAlCarrito('Tripa', 20)">Añadir al Carrito</button></div>
+        </div>
+        
+    <div id="carrito" class="carrito">
+        <h2>Carrito de Compras</h2>
+        <div id="contenido-carrito"></div>
+    </div>
+    <div class="ordenar">
+        <button onclick="ordenarAhora()">Ordenar Ahora</button>
+    </div>
+</body>
+</html>
